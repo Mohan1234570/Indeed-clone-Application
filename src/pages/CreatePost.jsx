@@ -5,7 +5,7 @@ import Dropdown from "../components/Dropdown";
 import { savePost } from "../services/api";
 import { useNavigate } from "react-router-dom";
 import { routhPath } from "../routes/route";
-
+import SearchBar from "./SearchBar";
 
 
 const Component = styled(Box)({
@@ -59,82 +59,102 @@ const options = {
 
 
 const CreatePost = () => {
-     const [data, setData] = useState({defaultObj});
+    const [data, setData] = useState({
+        profile: '',
+        type: '',
+        description: '',
+        experience: '',
+        technology: [],  // Make sure this is initialized as an array
+        salary: ''
+    });
 
-     const navigate = useNavigate();
-     
+    const navigate = useNavigate();
 
     const image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTH3zkKYlIHjjoQrE4e-a5xiJIaK0reWlcDhewsx8rjV87d8M82";
 
     const handleChange = (e) => {
-        setData({ ...data, [e.target.name]: e.target.value });
-    }
-  
+        const { name, value } = e.target;
+
+        if (name === "technology") {
+            setData((prevData) => ({
+                ...prevData,
+                [name]: Array.isArray(value) ? value : value.split(',') // Ensure it's an array
+            }));
+        } else {
+            setData((prevData) => ({
+                ...prevData,
+                [name]: value
+            }));
+        }
+    };
+
     const saveJob = async () => {
-       await savePost();
-       navigate(routhPath.posts);
-    }
+        console.log("Form data before sending:", data); // 👈 log this
+        try {
+            await savePost(data);
+            navigate('/posts');
+        } catch (error) {
+            console.error('Error saving post:', error);
+        }
+    };
 
-
-   
     return (
-      <>
-       <Header />
-       <Component>
-            <Container>
-                <Typography>Create a job post</Typography>
-               <img src={image} alt="create" />
-            </Container>
-            <FormWrapper>
-                <TextField
-                   placeholder="Job Title"
-                   name="profile"
-                   onChange={handleChange}
-                />
-              <Dropdown 
-               label="Job Type"
-               id="job-type-label"
-               value={data.type}
-               handleChange={handleChange}
-               name="type"
-               options={options.type}
-                />
-                <TextField 
-                   placeholder="Job description"
-                   name="description"
-                   onChange={handleChange}
-                />
-                <Dropdown 
-                    label="Experience"
-                    id="job-experience-label"
-                    value={data.experience}
-                    handleChange={handleChange}
-                    options={options.experience}
-                    name="experience"
-                />
-                <Dropdown 
-                     label="Technology"
-                     id="job-technologylabel"
-                     value={data.technology}
-                     handleChange={handleChange}
-                     options={options.technology}
-                     name="technology"
-                    
-                />
-                <Dropdown 
-                     label="Salary"
-                     id="job-salary-label"
-                     value={data.salary}
-                     handleChange={handleChange}
-                     options={options.salary}
-                     name="salary"
-                />
-                <Button onClick={() => saveJob()} variant="contained" >Save Job</Button>
-            </FormWrapper>
-        </Component>
-       </>
-    )
+        <>
+            <Header />
+            <Component>
+                <Container>
+                    <Typography>Create a job post</Typography>
+                    <img src={image} alt="create" />
+                </Container>
+                <FormWrapper>
+                    <TextField
+                        placeholder="Job Title"
+                        name="profile"
+                        onChange={handleChange}
+                    />
+                    <Dropdown 
+                        label="Job Type"
+                        id="job-type-label"
+                        value={data.type}
+                        handleChange={handleChange}
+                        name="type"
+                        options={options.type}
+                    />
+                    <TextField 
+                        placeholder="Job description"
+                        name="description"
+                        onChange={handleChange}
+                    />
+                    <Dropdown 
+                        label="Experience"
+                        id="job-experience-label"
+                        value={data.experience}
+                        handleChange={handleChange}
+                        options={options.experience}
+                        name="experience"
+                    />
+                    <Dropdown 
+                        label="Technology"
+                        id="job-technologylabel"
+                        value={data.technology}
+                        handleChange={handleChange}
+                        options={options.technology}
+                        name="technology"
+                        multiple={true} // Enable multiple selection
+                    />
+                    <Dropdown 
+                        label="Salary"
+                        id="job-salary-label"
+                        value={data.salary}
+                        handleChange={handleChange}
+                        options={options.salary}
+                        name="salary"
+                    />
+                    <Button onClick={() => saveJob()} variant="contained" >Save Job</Button>
+                </FormWrapper>
+            </Component>
+        </>
+    );
 }
-
 
 export default CreatePost;
