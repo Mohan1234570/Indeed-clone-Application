@@ -99,10 +99,14 @@ const AllPosts = () => {
     }
   
     return (
+      
       <Container>
-        <Box className={classes.searchBar} mb={3}>
-          <SearchBar onSearch={setSearchQuery} /> {/* Pass search function as prop */}
-        </Box>
+        <Header />  
+        
+        <Box sx={{ mt: 12, mb: 3 }}>
+        <SearchBar onSearch={setSearchQuery} />
+      </Box>{/* Pass search function as prop */}
+        
   
         <Grid container spacing={3} sx={{ pt: 3 }}>
           {filteredPosts.length > 0 ? (
