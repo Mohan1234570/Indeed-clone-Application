@@ -2,9 +2,16 @@
 
 
 export const routhPath = {
-    home                : '/',
+    landing             : '/',
+    home                : '/home',
     create              : '/create',
     posts               : '/posts',
-    invalid             : '/*'
+    search              : '/search',
+    invalid             : '/*',
+    profile             : '/profile',
+    myjobs              : '/myjobs',
+    reviews             : '/reviews',
+    help                : '/help',
+    logout              : '/logout'
 }
 
