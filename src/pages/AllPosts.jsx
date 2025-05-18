@@ -67,9 +67,9 @@ const AllPosts = () => {
       const getData = async () => {
         try {
           const response = await getAllPosts();
-          if (Array.isArray(response)) {
-            setPosts(response);
-            setFilteredPosts(response); // Initially, show all posts
+          if (Array.isArray(response.data)) {
+            setPosts(response.data);
+            setFilteredPosts(response.data); // Initially, show all posts
           } else {
             setError('No posts available or invalid response format');
           }

@@ -88,7 +88,38 @@ const CreatePost = () => {
         }
     };
 
+
+    // ✅ Validation function
+    const validateForm = () => {
+        if (!data.profile.trim()) {
+            alert("Please enter the Job Title.");
+            return false;
+        }
+        if (!data.type) {
+            alert("Please select the Job Type.");
+            return false;
+        }
+        if (!data.description.trim()) {
+            alert("Please enter the Job Description.");
+            return false;
+        }
+        if (!data.experience) {
+            alert("Please select the Experience.");
+            return false;
+        }
+        if (!data.technology.length) {
+            alert("Please select at least one Technology.");
+            return false;
+        }
+        if (!data.salary) {
+            alert("Please select the Salary Range.");
+            return false;
+        }
+        return true;
+    };
+
     const saveJob = async () => {
+        if (!validateForm()) return;
         console.log("Form data before sending:", data); // 👈 log this
         try {
             await savePost(data);

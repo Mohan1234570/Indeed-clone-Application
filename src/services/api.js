@@ -24,44 +24,88 @@ export const getAllPosts = async () => {
 }
 */
 
+
+// export const savePost = async (payload) => {
+//     console.log('Sending payload:', payload); // 👈 Add this
+//     try {
+//       const response = await axios.post(`${API_URL}/post`, payload, {
+//         headers: { 'Content-Type': 'application/json' } // 👈 make sure this is present
+//       });
+//       return response.data;
+//     } catch (error) {
+//       console.log('Error: ', error.message);
+//       if (error.response) {
+//         console.log('Error Response: ', error.response.data);
+//         return error.response.data;
+//       } else {
+//         console.log('Network Error or No Response');
+//         return { message: 'Network Error or No Response' };
+//       }
+//     }
+//   };
+
+
+
+//const API_URL = 'http://localhost:8080';
+
+
 import axios from 'axios';
+import jwtToken from '../services/jwtToken';
 
 const API_URL = 'http://localhost:8080';
 
-export const savePost = async (payload) => {
-    console.log('Sending payload:', payload); // 👈 Add this
-    try {
-      const response = await axios.post(`${API_URL}/post`, payload, {
-        headers: { 'Content-Type': 'application/json' } // 👈 make sure this is present
-      });
-      return response.data;
-    } catch (error) {
-      console.log('Error: ', error.message);
-      if (error.response) {
-        console.log('Error Response: ', error.response.data);
-        return error.response.data;
-      } else {
-        console.log('Network Error or No Response');
-        return { message: 'Network Error or No Response' };
-      }
-    }
-  };
-  
-  export const getAllPosts = async () => {
-    try {
-        const response = await axios.get(`${API_URL}/posts`);
-        console.log('API Response:', response); // Log the response
+const api = axios.create({
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  }
+});
 
-        // Assuming the response is just an array or object with posts as an array
-        return response.data; // If data is directly an array
-    } catch (error) {
-        console.log('Error:', error.message);
-        if (error.response) {
-            console.log('Error Response:', error.response.data); // Logs the error response from the server
-            return error.response.data;
-        } else {
-            console.log('Network Error or No Response');
-            return { message: 'Network Error or No Response' }; // Handle cases where no response is received
-        }
+// 👇 Interceptor to attach token to every request
+api.interceptors.request.use(
+  (config) => {
+    const token = jwtToken.getToken();  // 👈 now using the utility
+    console.log("📦 JWT Token being sent:", token); 
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+export default api;
+
+
+
+export const savePost = async (payload) => {
+  console.log('Sending payload:', payload);
+  try {
+    const response = await api.post('/post', payload);  // 👈 uses api instance with JWT
+    return response.data;
+  } catch (error) {
+    console.log('Error:', error.message);
+    if (error.response) {
+      console.log('Error Response:', error.response.data);
+      return error.response.data;
+    } else {
+      console.log('Network Error or No Response');
+      return { message: 'Network Error or No Response' };
+    }
+  }
+};
+export const getAllPosts = async () => {
+  try {
+      const response = await api.get('/posts');
+      return response.data;
+  } catch (error) {
+      console.log('Error:', error.message);
+      if (error.response) {
+          console.log('Error Response:', error.response.data);
+          return error.response.data;
+      } else {
+          console.log('Network Error or No Response');
+          return { message: 'Network Error or No Response' };
+      }
+  }
 };

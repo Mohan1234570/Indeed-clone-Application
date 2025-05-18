@@ -11,6 +11,7 @@ import ReviewsPage from "./pages/ReviewsPage";
 import HelpPage from "./pages/HelpPage";
 import LogoutPage from "./pages/LogoutPage";
 import Landing from "./pages/Landing";
+import PrivateRoute from "./routes/PrivateRoute";
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
      <Router>
        <Routes>
          <Route path={routhPath.landing} element={<Landing />} />
+         <Route element={<PrivateRoute />}>
          <Route path={routhPath.home} element={<Home />} />
          <Route path={routhPath.create} element={<CreatePost />} />
          <Route path={routhPath.posts} element={<AllPosts />} />
@@ -27,6 +29,8 @@ function App() {
          <Route path={routhPath.reviews} element={<ReviewsPage />} />
          <Route path={routhPath.help} element={<HelpPage />} />
          <Route path={routhPath.logout} element={<LogoutPage />} />
+         </Route>
+         
        </Routes>
      </Router>
   );

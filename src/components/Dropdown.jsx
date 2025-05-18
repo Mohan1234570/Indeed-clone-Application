@@ -50,6 +50,7 @@ const Dropdown = ({
    name,
    options,
    multiple = false, // Add multiple prop to allow for multiple selections
+   error, helperText,
    ...props
 }) => {
    return (
