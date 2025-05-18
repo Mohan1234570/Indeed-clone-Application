@@ -276,6 +276,7 @@
 import jwtToken from '../services/jwtToken';
 import { loginUser, registerUser } from '../services/authAPI';
 import React, { useState, useEffect } from "react";
+import { forgotPassword } from '../services/authAPI';
 import {
   Box,
   Button,
@@ -335,6 +336,7 @@ const Landing = () => {
       setUserName(data.username || loginEmail);
       setIsLoggedIn(true);
       setOpenLogin(false);
+      navigate("/home");
     } catch (error) {
       setLoginError(error.message || "Login failed");
     }
@@ -362,24 +364,20 @@ const Landing = () => {
   const handleForgotPasswordSubmit = async () => {
     setForgotError("");
     setForgotSuccess(false);
-
+  
     if (!forgotEmail) {
       setForgotError("Please enter your email address");
       return;
     }
-
+  
     try {
-      // Uncomment and replace with your real API call
-      // await forgotPassword({ email: forgotEmail });
-
-      // Simulate API success for demo
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
+      const message = await forgotPassword({ email: forgotEmail });
       setForgotSuccess(true);
     } catch (error) {
       setForgotError(error.message || "Failed to send reset instructions");
     }
   };
+  
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -602,7 +600,7 @@ const Landing = () => {
                 Send Reset Link
               </Button>
             )}
-          </DialogActions>
+          </DialogActions>+
         </Dialog>
       </Box>
     </div>
