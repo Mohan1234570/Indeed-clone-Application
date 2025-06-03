@@ -1,7 +1,4 @@
-
-
-
-import { Box, Typography,  Button, styled } from "@mui/material";
+import { Box, Typography, Button, styled, GlobalStyles } from "@mui/material";
 import Header from "../components/Header";
 import { routhPath } from "../routes/route";
 import { useNavigate } from "react-router-dom";
@@ -10,9 +7,6 @@ import React from "react";
 
 import { useState } from "react";
 import { Divider, ListItemIcon } from "@mui/material";
-//import { FaBriefcase, FaCog, FaRegStar, FaRegQuestionCircle, FaSignOutAlt } from 'react-icons/fa';
-
-
 
 import { FaUserCircle } from 'react-icons/fa'; // Profile Icon
 import { FaBriefcase } from 'react-icons/fa'; // Work Icon
@@ -20,9 +14,6 @@ import { FaCog } from 'react-icons/fa'; // Settings Icon
 import { FaRegStar } from 'react-icons/fa'; // RateReview Icon
 import { FaRegQuestionCircle } from 'react-icons/fa'; // HelpOutline Icon
 import { FaSignOutAlt } from 'react-icons/fa'; // Logout Icon
-
-
-
 
 const Component = styled(Box)({
   display: 'flex',
@@ -51,11 +42,11 @@ const Component = styled(Box)({
   }
 });
 
-
-
 const Home = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
+  const handleMenuClick = (event) => setAnchorEl(event.currentTarget);
+  const handleMenuClose = () => setAnchorEl(null);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -85,20 +76,27 @@ const Home = () => {
     // Your logic for reviews
   };
 
-const handleHelp = () => {
+  const handleHelp = () => {
     console.log('Help clicked');
     // Your logic for help
   };
 
   const handleLogout = () => {
-    console.log('User logged out');
-    handleClose();
+    handleMenuClose();
+    navigate("/");
   };
 
   const animatedImage = "https://images.ctfassets.net/pdf29us7flmy/5r34jiS1YfJuoRzqp3XH6y/6fba6547e16cd0ad08ae28dad306015d/Screen_Shot_2023-01-11_at_9.21.31_AM.png?w=720&q=100&fm=avif";
 
   return (
-    <div>
+    <>
+      {/* Global styles to prevent unwanted text selection and focus outlines */}
+      <GlobalStyles styles={{
+        '*:focus': { outline: 'none' },
+        'body, div, span, p': { userSelect: 'none' },
+        'input, textarea, select, button': { userSelect: 'text' }
+      }} />
+
       <Header />
 
       {/* Profile Dropdown */}
@@ -149,41 +147,41 @@ const handleHelp = () => {
           <Divider sx={{ my: 1 }} />
 
           <MenuItem onClick={handleProfile}>
-  <ListItemIcon>
-    <FaUserCircle fontSize="small" />
-  </ListItemIcon>
-  Profile
-</MenuItem>
-<MenuItem onClick={handleJobs}>
-  <ListItemIcon>
-    <FaBriefcase fontSize="small" />
-  </ListItemIcon>
-  Jobs
-</MenuItem>
-<MenuItem onClick={handleSettings}>
-  <ListItemIcon>
-    <FaCog fontSize="small" />
-  </ListItemIcon>
-  Settings
-</MenuItem>
-<MenuItem onClick={handleReviews}>
-  <ListItemIcon>
-    <FaRegStar fontSize="small" />
-  </ListItemIcon>
-  Reviews
-</MenuItem>
-<MenuItem onClick={handleHelp}>
-  <ListItemIcon>
-    <FaRegQuestionCircle fontSize="small" />
-  </ListItemIcon>
-  Help
-</MenuItem>
-<MenuItem onClick={handleLogout}>
-  <ListItemIcon>
-    <FaSignOutAlt fontSize="small" />
-  </ListItemIcon>
-  Logout
-</MenuItem>
+            <ListItemIcon>
+              <FaUserCircle fontSize="small" />
+            </ListItemIcon>
+            Profile
+          </MenuItem>
+          <MenuItem onClick={handleJobs}>
+            <ListItemIcon>
+              <FaBriefcase fontSize="small" />
+            </ListItemIcon>
+            Jobs
+          </MenuItem>
+          <MenuItem onClick={handleSettings}>
+            <ListItemIcon>
+              <FaCog fontSize="small" />
+            </ListItemIcon>
+            Settings
+          </MenuItem>
+          <MenuItem onClick={handleReviews}>
+            <ListItemIcon>
+              <FaRegStar fontSize="small" />
+            </ListItemIcon>
+            Reviews
+          </MenuItem>
+          <MenuItem onClick={handleHelp}>
+            <ListItemIcon>
+              <FaRegQuestionCircle fontSize="small" />
+            </ListItemIcon>
+            Help
+          </MenuItem>
+          <MenuItem onClick={handleLogout}>
+            <ListItemIcon>
+              <FaSignOutAlt fontSize="small" />
+            </ListItemIcon>
+            Logout
+          </MenuItem>
         </Menu>
       </Box>
 
@@ -197,7 +195,7 @@ const handleHelp = () => {
           <img src={animatedImage} alt="home" style={{ width: 600 }} />
         </Box>
       </Component>
-    </div>
+    </>
   );
 };
 

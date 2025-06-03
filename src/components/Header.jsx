@@ -17,15 +17,17 @@ const StyledAppBar = styled(AppBar)({
 
 
 const Header = () => {
-    const logo = "https://get-staffed.com/wp-content/uploads/2020/07/indeed-logo.png";
+    //const logo = "https://get-staffed.com/wp-content/uploads/2020/07/indeed-logo.png";
+    
 
 
     return (
        <StyledAppBar>
           <Toolbar>
-            <Link  to={routhPath.home}>
-              <img src={logo} alt="logo"  style={{ width: 95, marginBottom: 6 }}/>
-             </Link> 
+            {/* <Link  to={routhPath.home}>
+              {//<img src={logo} alt="logo"  style={{ width: 95, marginBottom: 6 }}/>}
+             </Link>  */}
+             <h1>My App</h1>
              <Link to={routhPath.create}>Post a Job</Link> 
              <Link to={routhPath.posts}>Find Jobs</Link> 
           </Toolbar>

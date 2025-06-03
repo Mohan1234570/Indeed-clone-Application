@@ -1,9 +1,17 @@
 import React from "react";
 import { Box, Typography, Button, Paper } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const LogoutPage = () => {
+  const navigate = useNavigate();
+
   const handleLogout = () => {
-    // Here, you'd typically clear user session data or redirect to login
+    // Clear JWT token and any other session-related data
+    localStorage.removeItem("token");
+
+    // Redirect to login page
+    navigate("/");
+
     console.log("User logged out");
   };
 
